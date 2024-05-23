@@ -1,3 +1,18 @@
+.products {
+
+    height: 600px;
+    overflow-y: auto;
+
+}
+
+.Orders{
+
+  height: 500px;
+  overflow-y: auto;
+
+}
+
+
 .App {
   text-align: center;
 }

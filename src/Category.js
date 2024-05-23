@@ -6,6 +6,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 function Category() {
 
+    const [catagories,setCategories] = useState(null);
+    const[edit,setEdit] = useState(null);
     const [categoryName,setcategoryName] = useState(null);
 
     useEffect(()=>{
@@ -20,7 +22,7 @@ function Category() {
       
     }
 
-    const [catagories,setCategories] = useState(null);
+    
   
   
     function getCategories() {
@@ -56,6 +58,28 @@ function Category() {
   
         
     }
+
+    function updateCategory() {
+
+      const data = {
+        "categoryName": categoryName
+      }
+
+      axios.put("http://localhost:8080/auth/categories/"+edit,data)
+  
+      .then(function (response) {
+        console.log(response)
+        getCategories();
+        setEdit(null);
+
+      })
+      .catch(function(error){
+        console.log(error)
+      });
+
+
+      
+    }
   
 
     return(
@@ -65,11 +89,13 @@ function Category() {
             <label></label>          
         </div>
 
-        <form>
+        
 
         <div class="container text-center">
         <div class="Row">
 
+            { !edit &&
+                  <form>
                     <div class="row align-items-start">
                     <div class="col">
                     <label for="inputCategory" class="col-sm-2 col-form-label" >Category</label>
@@ -85,6 +111,46 @@ function Category() {
                     }>Add</button>
                     </div>
                 </div>
+
+                        <div>
+                          <label for="freeSpace"></label>
+                        </div>
+                        <div>
+                          <label for="freeSpace"></label>
+                        </div>
+
+                </form>
+
+              }
+
+                { edit &&
+                  <form>
+                    <div class="row align-items-start">
+                    <div class="col">
+                    <label for="inputCategory" class="col-sm-2 col-form-label" >Category</label>
+                    </div>
+                    <div class="col">
+                    <input type="text" class="form-control" onChange={handleCategoryName} value={categoryName} id="categoryName"/>
+                    </div>
+                    <div class="col">
+                    <button type="button" class="btn btn-primary" onClick={
+                        ()=>{
+                            updateCategory();
+                        }
+                    }>Update</button>
+                    </div>
+                </div>
+
+                        <div>
+                          <label for="freeSpace"></label>
+                        </div>
+                        <div>
+                          <label for="freeSpace"></label>
+                        </div>
+
+                </form>
+
+              }
 
 
         
@@ -113,16 +179,14 @@ function Category() {
 
                 <td>
 
-                {/* <button type="button" class="btn btn-outline-danger" onClick={
+                <button type="button" class="btn btn-outline-success" onClick={
 
                     ()=>{
-                    setEdit(user);
-                    setUsername(user.username);
-                    setEmail(user.email);
-                    setPassword(user.password);
+                    setEdit(catagory.categoryId);
+                    setcategoryName(catagory.categoryName)
                     }
 
-                }>Edit</button> */}
+                }>Edit</button> 
 
 
                 <button type="button" class="btn btn-outline-warning"  onClick={
@@ -175,7 +239,7 @@ function Category() {
         
         </div>
         
-        </form>
+       
 
 
 

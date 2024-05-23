@@ -115,6 +115,7 @@ function Stock() {
           .then(function (response) {
             console.log(response)
             getStock();
+            setEdit(null);
                   
           })
           .catch(function(error){
@@ -184,7 +185,7 @@ return(
 
                                 <div class="form-group">
                                     <label for="exampleInputQuntity">Unit Price</label>
-                                    <input type="unitPrice" class="form-control" id="inputUnitPrice" onChange={handleUnitPrice} placeholder="Enter Quantity on hand"></input>
+                                    <input type="unitPrice" class="form-control" id="inputUnitPrice" onChange={handleUnitPrice} placeholder="Enter Unit Price"></input>
                                 </div>
 
                                

@@ -104,6 +104,12 @@ function Users() {
     return(
         <div className="Users">
 
+            <div>
+             <label for="freeSpace"></label>            
+            </div>
+            
+          <div class="container">
+
                 { !edit &&
                 <form onSubmit={save}>
 
@@ -272,7 +278,7 @@ function Users() {
 
 
 
-
+          </div>
         </div>
     );
 

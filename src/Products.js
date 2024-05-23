@@ -23,6 +23,7 @@ function Products() {
             setItems(response.data);
         })
         .catch(function (error) {
+
             console.log(error);
         })
 
@@ -89,6 +90,7 @@ function Products() {
                         setEdit(null);
                     })
                     .catch(function(error){
+
                         console.log(error)
                     });
                     

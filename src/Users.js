@@ -1,6 +1,7 @@
 
 import './App.css';
 import { useEffect, useState } from 'react';
+import { useAuth } from "./utils/AuthContext";
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -12,6 +13,15 @@ function Users() {
     const [password,setPassword] = useState(null);
     const [email,setEmail] = useState(null);
     const [edit,setEdit] = useState(null);
+
+    const { jwtToken } = useAuth();
+
+    const config = {
+      headers: {
+          Authorization: `Bearer ${jwtToken}`
+       }
+      }
+
 
     useEffect(()=>{
 
@@ -47,7 +57,7 @@ function Users() {
         "email": email
       }
   
-      axios.post("http://localhost:8080/auth/users",data)
+      axios.post("http://localhost:8080/users",data ,config)
   
       .then(function (response) {
         console.log(response)
@@ -70,7 +80,7 @@ function Users() {
         "email": email
       }
   
-      axios.put("http://localhost:8080/auth/users/"+edit.id,data)
+      axios.put("http://localhost:8080/users/"+edit.id,data ,config)
   
       .then(function (response) {
         console.log(response)
@@ -88,7 +98,7 @@ function Users() {
   
     function getUsers() {
   
-      axios.get("http://localhost:8080/auth/users")
+      axios.get("http://localhost:8080/users", config)
   
         .then(function (response) {
           setUsers(response.data);
@@ -241,7 +251,7 @@ function Users() {
 
                     ()=>{
 
-                    axios.delete("http://localhost:8080/auth/users/"+user.id)
+                    axios.delete("http://localhost:8080/users/"+user.id ,config)
 
                     .then(
 

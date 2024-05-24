@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
+import { useAuth } from './utils/AuthContext';
 
 
 
@@ -9,6 +10,14 @@ function Category() {
     const [catagories,setCategories] = useState(null);
     const[edit,setEdit] = useState(null);
     const [categoryName,setcategoryName] = useState(null);
+
+    const { jwtToken } = useAuth();
+
+    const config = {
+      headers: {
+          Authorization: `Bearer ${jwtToken}`
+       }
+      }
 
     useEffect(()=>{
 
@@ -27,7 +36,7 @@ function Category() {
   
     function getCategories() {
   
-      axios.get("http://localhost:8080/auth/categories")
+      axios.get("http://localhost:8080/categories",config)
   
         .then(function (response) {
           setCategories(response.data);
@@ -46,7 +55,7 @@ function Category() {
         "categoryName": categoryName
       }
   
-      axios.post("http://localhost:8080/auth/categories",data)
+      axios.post("http://localhost:8080/categories",data,config)
   
       .then(function (response) {
         console.log(response)
@@ -65,7 +74,7 @@ function Category() {
         "categoryName": categoryName
       }
 
-      axios.put("http://localhost:8080/auth/categories/"+edit,data)
+      axios.put("http://localhost:8080/categories/"+edit,data,config)
   
       .then(function (response) {
         console.log(response)
@@ -88,8 +97,6 @@ function Category() {
         <div>
             <label></label>          
         </div>
-
-        
 
         <div class="container text-center">
         <div class="Row">
@@ -193,7 +200,7 @@ function Category() {
 
                     ()=>{
 
-                    axios.delete("http://localhost:8080/auth/categories/"+catagory.categoryId)
+                    axios.delete("http://localhost:8080/categories/"+catagory.categoryId,config)
 
                     .then(
 

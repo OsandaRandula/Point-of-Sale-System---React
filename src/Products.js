@@ -3,6 +3,7 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
+import { useAuth } from './utils/AuthContext';
 
 function Products() {
 
@@ -13,12 +14,20 @@ function Products() {
     const [categoryId,setCategory] = useState(null);
     const [edit,setEdit] = useState(null);
     const [defaultValue, setDefaultValue] = useState(null);
+
+    const { jwtToken } = useAuth();
+
+    const config = {
+      headers: {
+          Authorization: `Bearer ${jwtToken}`
+       }
+      }
     
     
 
     useEffect( () =>{
 
-        axios.get("http://localhost:8080/auth/items")
+        axios.get("http://localhost:8080/items",config)
         .then(function (response) {
             setItems(response.data);
         })
@@ -29,7 +38,7 @@ function Products() {
 
 
 
-        axios.get("http://localhost:8080/auth/categories")
+        axios.get("http://localhost:8080/categories",config)
         .then(function (response) {
             
             setCategories(response.data);
@@ -56,7 +65,7 @@ function Products() {
 
                 }
 
-                axios.post("http://localhost:8080/auth/items",data)
+                axios.post("http://localhost:8080/items",data ,config)
 
                 .then(function (response) {
                     getItems();
@@ -82,7 +91,7 @@ function Products() {
     
                     }
                     
-                    axios.put("http://localhost:8080/auth/items/"+edit,data)
+                    axios.put("http://localhost:8080/items/"+edit,data, config)
     
                     .then(function (response) {
                         getItems();
@@ -120,7 +129,7 @@ function Products() {
 
                 function getItems() {
 
-                axios.get("http://localhost:8080/auth/items")
+                axios.get("http://localhost:8080/items",config)
 
                 .then( 
                     function (response) {
@@ -282,7 +291,7 @@ function Products() {
 
                                         ()=>{
 
-                                        axios.delete("http://localhost:8080/auth/items/"+item.itemCode)
+                                        axios.delete("http://localhost:8080/items/"+item.itemCode, config)
 
                                         .then(
 

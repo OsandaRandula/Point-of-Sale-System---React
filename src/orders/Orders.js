@@ -3,11 +3,20 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useNavigate } from 'react-router-dom';
 import EditOrder from './EditOrder';
+import { useAuth } from '../utils/AuthContext';
 
 
 function Orders() {
 
     const [orders,setOrders] = useState([]);
+
+    const { jwtToken } = useAuth();
+
+    const config = {
+      headers: {
+          Authorization: `Bearer ${jwtToken}`
+       }
+    }
 
     useEffect(()=>{
 
@@ -19,7 +28,7 @@ function Orders() {
 
     function getOrders() {
 
-        axios.get("http://localhost:8080/auth/orders")
+        axios.get("http://localhost:8080/orders" ,config)
         .then(function (response) {
             setOrders(response.data);
         })
@@ -31,7 +40,7 @@ function Orders() {
 
     function createOrder() {
 
-        axios.post("http://localhost:8080/auth/orders")
+        axios.post("http://localhost:8080/orders" ,config)
                         .then(function (response) {
 
                             console.log(response)

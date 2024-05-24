@@ -3,6 +3,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../utils/AuthContext';
 
 
 function EditOrder() {
@@ -16,9 +17,17 @@ function EditOrder() {
     const[items,setItems] = useState(null);
     const [count, setCount] = useState(0);
 
+    const { jwtToken } = useAuth();
+
+    const config = {
+      headers: {
+          Authorization: `Bearer ${jwtToken}`
+       }
+      }
+
     useEffect(()=>{
         
-        axios.get(`http://localhost:8080/auth/orders/${orderId}`)
+        axios.get(`http://localhost:8080/orders/${orderId}` ,config)
         .then(function (response) {
             
             setOrder(response.data);
@@ -29,7 +38,7 @@ function EditOrder() {
             console.log(error)
         });
 
-        axios.get(`http://localhost:8080/auth/orderDetails/${orderId}`)
+        axios.get(`http://localhost:8080/orderDetails/${orderId}` ,config)
         .then(function (response) {
             
             setOrderDetails(response.data);
@@ -40,7 +49,7 @@ function EditOrder() {
             console.log(error)
         });
 
-        axios.get(`http://localhost:8080/auth/items`)
+        axios.get(`http://localhost:8080/items` ,config)
         .then(function (response) {
             
             setItems(response.data)
@@ -58,7 +67,7 @@ function EditOrder() {
 
     function getOrderDetails() {
 
-        axios.get(`http://localhost:8080/auth/orderDetails/${orderId}`)
+        axios.get(`http://localhost:8080/orderDetails/${orderId}` ,config)
         .then(function (response) {
             
             setOrderDetails(response.data);
@@ -69,7 +78,7 @@ function EditOrder() {
             console.log(error)
         });
 
-        axios.get(`http://localhost:8080/auth/orders/${orderId}`)
+        axios.get(`http://localhost:8080/orders/${orderId}` ,config)
         .then(function (response) {
             
             setOrder(response.data);
@@ -143,7 +152,7 @@ function EditOrder() {
 
                                                 <button type="button" class="btn btn-light" onClick={()=>{
 
-                                                    axios.delete(`http://localhost:8080/auth/orders/removeProducts/${orderDetail.orderDetailsId}`)
+                                                    axios.delete(`http://localhost:8080/orders/removeProducts/${orderDetail.orderDetailsId}` ,config)
                                                     .then(function (response) {
 
                                                         getOrderDetails()
@@ -168,13 +177,14 @@ function EditOrder() {
 
                         </table>
                         
-                        {/* {order.status == false && (
+                        {order.status == false && (
                             <div >
                             <button type="button" class="btn btn-warning" onClick={()=>{
-                                axios.put(`http://localhost:8080/orders/${orderId}/confirmOrder`)
+                                axios.put(`http://localhost:8080/orders/${orderId}/confirmOrder` ,config)
                                 .then(function (response) {
                         
                                     navigate("/orders")
+                                    
                         
                                 })
                                 .catch(function (error) {
@@ -183,7 +193,7 @@ function EditOrder() {
                             }}>Confirm Order</button>
                         </div>
 
-                        )} */}
+                        )}
                         
                         
                     
@@ -227,7 +237,7 @@ function EditOrder() {
                                     itemCode: item.itemCode,
                                     quantity : count
                                 }
-                                axios.post(`http://localhost:8080/auth/orders/${orderId}/addProducts`,data)
+                                axios.post(`http://localhost:8080/orders/${orderId}/addProducts`,data ,config)
                                 .then(function (response) {
 
                     

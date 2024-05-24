@@ -2,6 +2,7 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
+import { useAuth } from './utils/AuthContext';
 
 
 function Stock() {
@@ -15,9 +16,17 @@ function Stock() {
     const [edit,setEdit] = useState(null);
     const [defaultValue,setDefaultValue] = useState(null);
 
+    const { jwtToken } = useAuth();
+
+    const config = {
+      headers: {
+          Authorization: `Bearer ${jwtToken}`
+       }
+    }
+
     useEffect(()=>{
 
-        axios.get(`http://localhost:8080/auth/items`)
+        axios.get(`http://localhost:8080/items`,config)
         .then(function (response) {
             
             setItems(response.data)
@@ -59,7 +68,7 @@ function Stock() {
 
     function getStock() {
 
-        axios.get(`http://localhost:8080/auth/stocks`)
+        axios.get(`http://localhost:8080/stocks`,config)
         .then(function (response) {
             
             setStocks(response.data)
@@ -83,7 +92,7 @@ function Stock() {
             "unitPrice": unitPrice
           }
       
-          axios.post("http://localhost:8080/auth/stocks",data)
+          axios.post("http://localhost:8080/stocks",data ,config)
       
           .then(function (response) {
             console.log(response)
@@ -110,7 +119,7 @@ function Stock() {
             "unitPrice": unitPrice
           }
       
-          axios.put("http://localhost:8080/auth/stocks/"+item.itemCode,data)
+          axios.put("http://localhost:8080/stocks/"+item.itemCode,data ,config)
       
           .then(function (response) {
             console.log(response)

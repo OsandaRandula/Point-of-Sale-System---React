@@ -11,15 +11,20 @@ import Category from './Category';
 import Orders from './orders/Orders';
 import EditOrder from './orders/EditOrder';
 import Stock from './Stock';
+import { AuthProvider} from './utils/AuthContext';
+import ProtectedRoute from './utils/ProtectedRote';
+import LoginPage from './Login';
 
 
 
 function App() { 
+
+   
   
     return(
         <div>
           
-          
+            <AuthProvider>
             <BrowserRouter>
             
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -36,17 +41,14 @@ function App() {
                         <a class="nav-link active" href="Products">Items</a>
                         <a class="nav-link active" href="Category">Category</a>
                         <a class="nav-link active" href='Stock'>Stock</a>   
-                        <a class="nav-link active" href='Orders'>Orders</a>
-                        <a class="nav-link active" href='Login'>LoginPage</a> 
-                                             
+                        <a class="nav-link active" href='Orders'>Orders</a>                                      
                     
                     </div>
                     </div>
                 </div>
-            </nav>
-
+            </nav> 
                 <Routes>
-
+                    <Route element={<ProtectedRoute/>}>
 
                         <Route path='/home' element={ <Home /> }/>
                         <Route path='/users' element={ <Users /> }/>
@@ -56,11 +58,17 @@ function App() {
                         <Route path='/orders' element={<Orders/>}/>
                         <Route path='/orders/:orderId/items' element={<EditOrder/>}/>
                         
-                
+                    </Route>
 
-                </Routes>
+                    <Route path="/login" element={<LoginPage/>} />
+
+                 </Routes>
+
+
             
             </BrowserRouter>
+                
+            </AuthProvider>
          
         
           
